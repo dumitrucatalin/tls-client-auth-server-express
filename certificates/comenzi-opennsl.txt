@@ -1,0 +1,16 @@
+openssl genrsa -out myCA.key 2048
+openssl req -x509 -new -nodes -key myCA.key -sha256 -days 1825 -out myCA.pem  -config "C:\openssl-1.0.1h\apps\openssl.cnf"
+openssl genrsa -out dev.mergebot.com.key 2048
+openssl req -new -key dev.mergebot.com.key -out dev.mergebot.com.csr  -config "C:\openssl-1.0.1h\apps\openssl.cnf"
+openssl x509 -req -in .\dev.mergebot.com.csr -CA .\myCA.pem -CAkey .\myCA.key -CAcreateserial -out mydomain.com.crt -days 500 -sha256
+openssl pkcs12 -export -out CAcertificate.pfx -inkey myCA.key -in myCA.pem
+
+
+openssl x509 -req -in dev.mergebot.com.csr -CA myCA.pem -CAkey myCA.key -CAcreateserial -out dev.mergebot.com.crt -days 1825 -sha256 -extfile dev.mergebot.com.ext 
+
+
+
+ -config "C:\openssl-1.0.1h\apps\openssl.cnf"
+
+
+openssl x509 -req -in .\dev.mergebot.com.csr -CA .\myCA.pem -CAkey .\myCA.key -CAcreateserial -out mydomain.com.crt -days 500 -sha256
